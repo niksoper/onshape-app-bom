@@ -27,10 +27,10 @@ function init() {
   passport.use(new OnshapeStrategy({
     clientID: oauthClientId,
     clientSecret: oauthClientSecret,
-    callbackURL: hostedPath + "/oauthRedirect",
-    authorizationURL: oauthPath + "/oauth/authorize",
-    tokenURL: oauthPath + "/oauth/token",
-    userProfileURL: platformPath + "/api/users/session"
+    callbackURL: "https://intense-springs-38953.herokuapp.com/oauthRedirect",
+    authorizationURL: "https://cad.onshape.com/oauth/authorize",
+    tokenURL: "https://cad.onshape.com/oauth/token",
+    userProfileURL: "https://cad.onshape.com/api/users/session"
   },
     function (accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...

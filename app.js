@@ -96,6 +96,8 @@ function storeExtraParams(req, res) {
   var uniqueID = "state" + passport.session();
   client.set(uniqueID, stateString);
 
+  console.log('Store', { state });
+
   return passport.authenticate("onshape")(req, res);
 }
 
@@ -105,7 +107,8 @@ function storeExtraParams(req, res) {
 //   signin page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.use('/oauthRedirect',
-  passport.authenticate('onshape', { failureRedirect: '/grantDenied' }),
+  console.log('Redirect');
+passport.authenticate('onshape', { failureRedirect: '/grantDenied' }),
   function (req, res) {
     var uniqueID = "state" + passport.session();
     console.log('DEBUG oauthRedirect', { uniqueID, req })
