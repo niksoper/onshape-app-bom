@@ -17,7 +17,7 @@ var index = require('./routes/index');
 
 var client;
 if (process.env.REDISTOGO_URL) {
-  var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+  var rtg = require("url").parse(process.env.REDISTOGO_URL);
   client = require("redis").createClient(rtg.port, rtg.hostname);
 
   client.auth(rtg.auth.split(":")[1]);
@@ -75,10 +75,10 @@ app.get('/grantDenied', index.grantDenied);
 //   the user to onshape.com.  After authorization, Onshape will redirect the user
 //   back to this application at /oauthRedirect
 app.use('/oauthSignin', storeExtraParams,
-    function(req, res){
-      // The request will be redirected to Onshape for authentication, so this
-      // function will not be called.
-    }
+  function (req, res) {
+    // The request will be redirected to Onshape for authentication, so this
+    // function will not be called.
+  }
 );
 
 function storeExtraParams(req, res) {
@@ -87,9 +87,9 @@ function storeExtraParams(req, res) {
   var elId = req.query.elementId;
 
   var state = {
-    documentId : docId,
-    workspaceId : workId,
-    elementId : elId
+    documentId: docId,
+    workspaceId: workId,
+    elementId: elId
   };
 
   var stateString = JSON.stringify(state);
@@ -105,21 +105,22 @@ function storeExtraParams(req, res) {
 //   signin page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.use('/oauthRedirect',
-    passport.authenticate('onshape', { failureRedirect: '/grantDenied' }),
-    function(req, res) {
-      var uniqueID = "state" + passport.session();
-      client.get(uniqueID, function(err, reply) {
-        // reply is null when the key is missing
-        if (reply != null) {
-          var newParams = JSON.parse(reply);
-          var url = '/?' + 'documentId=' + newParams.documentId + '&workspaceId=' + newParams.workspaceId + '&elementId=' + newParams.elementId;
-          res.redirect(url);
-        }
-      });
+  passport.authenticate('onshape', { failureRedirect: '/grantDenied' }),
+  function (req, res) {
+    var uniqueID = "state" + passport.session();
+    console.log('DEBUG oauthRedirect', { uniqueID, req })
+    client.get(uniqueID, function (err, reply) {
+      // reply is null when the key is missing
+      if (reply != null) {
+        var newParams = JSON.parse(reply);
+        var url = '/?' + 'documentId=' + newParams.documentId + '&workspaceId=' + newParams.workspaceId + '&elementId=' + newParams.elementId;
+        res.redirect(url);
+      }
     });
+  });
 
 /// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -132,7 +133,7 @@ app.use(function(req, res, next) {
 
 if (app.get('env') === 'development') {
   console.log('USING DEV ERROR HANDLER...')
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -144,7 +145,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
