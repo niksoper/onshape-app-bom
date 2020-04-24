@@ -446,12 +446,14 @@ var getWorkspace = function (req, res) {
   var url = apiUrl + '/api/documents/d/' + req.query.documentId + '/workspaces';
 
   console.log(`GETTING WORKSPACES FOR DOCUMENT '${req.query.documentId}'`);
+
+  var accessToken = req.user ? req.user.accessToken ? 'not-a-token'
   console.log(`ACCESS TOKEN '${req.user && req.user.accessToken}'`);
 
   request.get({
     uri: url,
     headers: {
-      'Authorization': 'Bearer ' + req.user.accessToken
+      'Authorization': 'Bearer ' + accessToken
     }
   }).then(function (data) {
     console.log('Successful Request', { data });
