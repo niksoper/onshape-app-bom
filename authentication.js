@@ -17,25 +17,25 @@ if (process.env.OAUTH_CLIENT_SECRET) {
 }
 
 function init() {
-  passport.serializeUser(function(user, done) {
+  passport.serializeUser(function (user, done) {
     done(null, user);
   });
-  passport.deserializeUser(function(obj, done) {
+  passport.deserializeUser(function (obj, done) {
     done(null, obj);
   });
 
   passport.use(new OnshapeStrategy({
-      clientID: oauthClientId,
-      clientSecret: oauthClientSecret,
-      callbackURL: hostedPath + "/oauthRedirect",
-      authorizationURL: oauthPath + "/oauth/authorize",
-      tokenURL: oauthPath + "/oauth/token",
-      userProfileURL: platformPath + "/api/users/session"
-    },
-    function(accessToken, refreshToken, profile, done) {
+    clientID: oauthClientId,
+    clientSecret: oauthClientSecret,
+    callbackURL: hostedPath + "/oauthRedirect",
+    authorizationURL: oauthPath + "/oauth/authorize",
+    tokenURL: oauthPath + "/oauth/token",
+    userProfileURL: platformPath + "/api/users/session"
+  },
+    function (accessToken, refreshToken, profile, done) {
       // asynchronous verification, for effect...
       process.nextTick(function () {
-
+        console.log("Authenticating", { profile, accessToken, refreshToken });
         profile.accessToken = accessToken;
         profile.refreshToken = refreshToken;
 
@@ -75,17 +75,17 @@ function refreshOAuthToken(req, res, next) {
         'grant_type': 'refresh_token',
         'refresh_token': refreshToken
       }
-    }).then(function(body) {
+    }).then(function (body) {
       delete pendingTokenRefreshes[req.session.id];
       return onOAuthTokenReceived(body, req);
-    }).catch(function(error) {
+    }).catch(function (error) {
       delete pendingTokenRefreshes[req.session.id];
       console.log('Error refreshing OAuth Token: ', error);
       res.status(401).send({
         authUri: getAuthUri(),
         msg: 'Authentication required.'
       });
-      throw(error);
+      throw (error);
     });
     return pendingTokenRefreshes[req.session.id];
   } else {
