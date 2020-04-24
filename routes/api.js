@@ -447,7 +447,7 @@ var getWorkspace = function (req, res) {
 
   console.log(`GETTING WORKSPACES FOR DOCUMENT '${req.query.documentId}'`);
 
-  var accessToken = req.user ? req.user.accessToken ? 'not-a-token'
+  var accessToken = req.user ? req.user.accessToken : 'not-a-token';
   console.log(`ACCESS TOKEN '${req.user && req.user.accessToken}'`);
 
   request.get({
