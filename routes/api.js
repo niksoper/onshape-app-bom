@@ -445,6 +445,9 @@ var getAccounts = function(req, res) {
 var getWorkspace = function(req, res) {
   var url = apiUrl + '/api/documents/d/' + req.query.documentId + '/workspaces';
 
+  console.log(`GETTING WORKSPACES FOR DOCUMENT '${req.query.documentId}'`)
+  console.log(`ACCESS TOKEN '${req.user.accessToken}'`)
+
   request.get({
     uri: url,
     headers: {
