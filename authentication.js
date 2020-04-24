@@ -64,7 +64,7 @@ function refreshOAuthToken(req, res, next) {
   if (pendingTokenRefreshes[req.session.id]) {
     return pendingTokenRefreshes[req.session.id]
   }
-  var refreshToken = req.user.refreshToken;
+  var refreshToken = req.user && req.user.refreshToken;
 
   if (refreshToken) {
     pendingTokenRefreshes[req.session.id] = request.post({
