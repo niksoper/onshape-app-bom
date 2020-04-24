@@ -14,6 +14,7 @@ $(document).ready(function() {
 
   // connect the button
   $("#element-generate").button().click(onGenerate);
+  $("#element-test").button().click(onTest);
   $("#element-save-csv").button().click(onSave);
   $("#element-print").button().click(onPrint);
 
@@ -294,6 +295,7 @@ function refreshContextElements(selectedIndexIn) {
       });
     },
     error: function(data) {
+      console.error('ERROR GETTING WORKSPACE')
       $("#elt-select").append("<option value='" + 0 + "'" + " disabled>* Could not access assemblies list in this document *</option>");
       var b = document.getElementById("element-generate");
       b.disabled = true;
@@ -378,6 +380,10 @@ var realSize = 0.001;
 var tX = 0;
 var tY = 0;
 var tZ = 0;
+
+function onTest() {
+  refreshContextElements(0)
+}
 
 function onGenerate() {
   // Make sure the application is subscribed
